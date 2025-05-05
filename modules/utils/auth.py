@@ -1,8 +1,11 @@
 from pydantic_settings import BaseSettings
-from fastapi import Request,HTTPException
+from fastapi import Request,HTTPException, Depends
 from sqlmodel import select
 from datetime import datetime, timedelta  
-import jwt
+from jose import jwt, JWTError
+from fastapi.security import OAuth2PasswordBearer
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
 
 Algorithm='HS256'
 class Secret_key(BaseSettings):
@@ -31,11 +34,15 @@ def jwt_token_decrypt(jwt_token):
         raise HTTPException(status_code=401, detail="Invalid token")
 
 def authenticate(request: Request):
-    from modules.user .user_model import User, engine,Session #the reason to put  here is we cant ab;e to import as a circulate
+    from modules.user .user_model import User, engine,Session 
     bearer_token=request.headers.get("Authorization")
+    
+    if not bearer_token or not bearer_token.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing or invalid token")
+
     jwt_token=bearer_token.split(" ")[1]
     payload=jwt_token_decrypt(jwt_token)
-    email=payload["sub"]
+    email=payload["email"]
     with Session(engine) as session:
         user=session.exec(select(User).where(User.email==email)).first()
         if not user:

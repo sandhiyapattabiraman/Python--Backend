@@ -1,14 +1,12 @@
 from fastapi import APIRouter
-from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends, FastAPI,HTTPException
+from fastapi import Depends, FastAPI,HTTPException, status
 from .user_schema import UserCreate,UserLogin
 from .user_service import UserService
-from ..utils.auth import jwt_token_decrypt
-
+from ..utils.auth import  authenticate
+from uuid import UUID
 
 
 user_router=APIRouter(prefix="/users")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
 
 @user_router.post("/register")
 def register_users(user:UserCreate):
@@ -25,20 +23,10 @@ def login_user(user_login:UserLogin):
 
     return {"access_token": user["access_token"], "token_type": "bearer"}
 
-@user_router.get("/me")
-async def get_current_user(token: str=Depends(oauth2_scheme) ):
-    payload = jwt_token_decrypt(token)
-    user_id = payload.get("sub")
-    user = UserService.get_user_by_id(user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
 
-@user_router.get("/profile")
-def get_user_profile(token: str=Depends(oauth2_scheme)):
-    payload = jwt_token_decrypt(token)
-    user_id = payload.get("sub")
-    user = UserService.get_user_by_id(user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
+@user_router.get("/current-user")
+def current_user(current_user: UUID = Depends(authenticate)):
+    user = UserService.get_username(current_user)
+    return {'username': user.username}
+    
+

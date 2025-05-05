@@ -1,10 +1,12 @@
-from .user_schema import UserCreate,UserLogin
+from .user_schema import UserCreate
 from .user_model import User,UserDao
 import bcrypt
 from ..utils.auth import jwt_token_encrypt
 from fastapi import HTTPException
-from uuid import UUID
-from ..utils .auth import jwt_token_encrypt
+from ..utils.database import Session,engine
+from sqlmodel import select
+
+
 
 
 
@@ -14,7 +16,7 @@ class UserService():
      salt = bcrypt.gensalt()
      hashed_password = bcrypt.hashpw(password.encode(), salt)
      return hashed_password.decode()
- 
+
    def verify_password(plain_password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
 
@@ -31,12 +33,15 @@ class UserService():
     return {"username":new_user.username,"email":new_user.email,"token":token}
 
 
-   def authenticate_user(user_login:UserLogin):
+   def authenticate_user(user_login):
      user= UserDao.get_user_byemail(user_login.email)
-     gethashpasword=UserDao.get_user_password_hash(user_login.email)
-     if not user or not UserService.verify_password(user_login.password,gethashpasword):
+     get_hash_password=UserDao.get_user_password_hash(user_login.email)
+     if not user or not UserService.verify_password(user_login.password,get_hash_password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
      token = jwt_token_encrypt(user)
      return {"access_token": token, "token_type": "bearer"}
-   def get_user_by_id(user_id:UUID):
-      return UserDao.get_user_byid(user_id)
+   
+   def get_username(user_id):
+     with Session(engine) as session:
+       user = session.exec(select(User).where(User.id == user_id)).first()
+       return user
