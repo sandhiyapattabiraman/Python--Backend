@@ -5,23 +5,33 @@ The Pet E-Commerce Website is an online shopping platform designed especially fo
 ## PROJECT RESOURCES
 
 API Desgine Document
+
 (https://docs.google.com/document/d/1xfcwbKDJP6TQa8nGcts90CXPdwCjAphLBkQFvN3bsNA/edit?tab=t.0)
 
-Architecture Diagram(https://docs.google.com/document/d/1nro2wXXN2AzUznKdWnidSOdAu3o4glxoWCrgWSTj9k0/edit?tab=t.0)
+Architecture Diagram
 
-ER Diagram(https://docs.google.com/document/d/1cTwx899yEcNwjSZ9sOc6rEDHP4XdBbxpHcE8QvGUZAc/edit?tab=t.0)
+(https://docs.google.com/document/d/1nro2wXXN2AzUznKdWnidSOdAu3o4glxoWCrgWSTj9k0/edit?tab=t.0)
+
+ER Diagram
+
+(https://docs.google.com/document/d/1cTwx899yEcNwjSZ9sOc6rEDHP4XdBbxpHcE8QvGUZAc/edit?tab=t.0)
 
 ## TECH STACK
 
 **Frontend** : HTML, CSS, Javascript
 
 **Backend** : Python, FastAPI
+
 **DataBase** : SQLite
 
 ## FEATURES
 
 Browse products by category (accessories, toys, cleaning, etc.)
+
 Add products to wishlist and view saved items
+
 Add to cart and manage item quantities
+
 View order history after purchase
+
 View Profile
