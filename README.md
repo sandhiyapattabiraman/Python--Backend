@@ -4,7 +4,8 @@ The Pet E-Commerce Website is an online shopping platform designed especially fo
 
 ## PROJECT RESOURCES
 
-API Desgine Document(https://docs.google.com/document/d/1xfcwbKDJP6TQa8nGcts90CXPdwCjAphLBkQFvN3bsNA/edit?tab=t.0)
+API Desgine Document
+(https://docs.google.com/document/d/1xfcwbKDJP6TQa8nGcts90CXPdwCjAphLBkQFvN3bsNA/edit?tab=t.0)
 
 Architecture Diagram(https://docs.google.com/document/d/1nro2wXXN2AzUznKdWnidSOdAu3o4glxoWCrgWSTj9k0/edit?tab=t.0)
 
@@ -13,6 +14,7 @@ ER Diagram(https://docs.google.com/document/d/1cTwx899yEcNwjSZ9sOc6rEDHP4XdBbxpH
 ## TECH STACK
 
 **Frontend** : HTML, CSS, Javascript
+
 **Backend** : Python, FastAPI
 **DataBase** : SQLite
 
