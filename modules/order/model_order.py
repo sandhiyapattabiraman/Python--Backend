@@ -1,9 +1,11 @@
-from sqlmodel import SQLModel, Field, select
+from sqlmodel import SQLModel, Field, select, func
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
 from ..utils.database import Session, engine
 from sqlmodel import delete
 from ..cart.model_cart import cart
+from ..product.model_product import Product
+
 
 def generate_timestamp():
     return datetime.now(timezone.utc)
@@ -70,5 +72,32 @@ class OrderDAO:
 
     def most_sold():
         with Session(engine) as session:
-           pass
+           statement = (
+            select(
+                Order.product_id,
+                Order.product_name,
+                Product.Price,
+                Product.Description,
+                Order.product_image,
+                func.sum(Order.quantity).label("total_sold")
+            )
+            .join(Product, Product.id == Order.product_id)
+            .group_by(Order.product_id)
+            .order_by(func.sum(Order.quantity).desc())
+            .limit(10)
+        )
+        results = session.exec(statement).all()
+
+        bestsellers = []
+        for row in results:
+            bestsellers.append({
+                "product_id": row.product_id,
+                "name": row.product_name,
+                "description": row.Description,
+                "price": row.Price,
+                "image_url": row.product_image,
+                "total_sold": row.total_sold
+            })
+
+        return bestsellers
         

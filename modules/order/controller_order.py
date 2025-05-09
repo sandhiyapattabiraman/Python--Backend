@@ -8,6 +8,7 @@ from typing import List
 
 
 
+
 order_router = APIRouter(prefix= "/order")
 
 @order_router.post("/placeOrder")
@@ -66,4 +67,8 @@ def get_orders(user_id: UUID = Depends(authenticate)):
 
 @order_router.get("/bestseller")
 def best_seller():
-    return OrderService.get_products()
+    try:
+        data = OrderService.get_products()
+        return data
+    except Exception as e:
+        return {"error": str(e)}
