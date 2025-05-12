@@ -2,16 +2,17 @@ from pydantic_settings import BaseSettings
 from fastapi import Request,HTTPException, Depends
 from sqlmodel import select
 from datetime import datetime, timedelta  
-from jose import jwt, JWTError
+from jose import jwt
 from fastapi.security import OAuth2PasswordBearer
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
 
 Algorithm='HS256'
 class Secret_key(BaseSettings):
-    secret_key:str = "sandhiya"
+    secret_key:str 
     class Config:
-        env_file = "venv"
+        env_file = ".env"
 secret_key=Secret_key()
 
 def jwt_token_encrypt(new_user):
