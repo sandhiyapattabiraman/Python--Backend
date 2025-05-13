@@ -18,14 +18,11 @@ async def lifespan(app):
  
 app = FastAPI(title="project", lifespan=lifespan)     
 
-origins = [
-    "http://localhost:5501",
-    "https://pet-world04.netlify.app/",
-]
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
