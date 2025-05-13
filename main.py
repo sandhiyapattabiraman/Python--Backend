@@ -22,7 +22,7 @@ app = FastAPI(title="project", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000","https://pet-world04.netlify.app"],  
+    allow_origins=["http://localhost:8000","https://pet-world04.netlify.app","https://sandhiyapattabiraman.github.io"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
