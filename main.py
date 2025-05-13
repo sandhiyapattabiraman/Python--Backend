@@ -20,13 +20,13 @@ app = FastAPI(title="project", lifespan=lifespan)
 
 
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["https://pet-world04.netlify.ap"],  
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://pet-world04.netlify.app"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
