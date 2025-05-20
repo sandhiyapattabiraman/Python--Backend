@@ -18,7 +18,10 @@ class UserService():
      return hashed_password.decode()
 
    def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
+      result = bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
+      print("Password match:", result)
+      return result
+    
 
    def create_user(user_create:UserCreate):
     hashed_password = UserService.hash_password(user_create.password)  
@@ -34,12 +37,18 @@ class UserService():
 
 
    def authenticate_user(user_login):
-     user= UserDao.get_user_byemail(user_login.email)
-     get_hash_password=UserDao.get_user_password_hash(user_login.email)
-     if not user or not UserService.verify_password(user_login.password,get_hash_password):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-     token = jwt_token_encrypt(user)
-     return {"access_token": token, "token_type": "bearer"}
+    user = UserDao.get_user_byemail(user_login.email)
+    
+    if not user:
+        return None 
+
+    if not UserService.verify_password(user_login.password, user.password_hash):
+        return None  
+
+    token = jwt_token_encrypt(user)
+    print(token)
+    return {"access_token": token, "token_type": "bearer"}
+
    
    def get_username(user_id):
      with Session(engine) as session:

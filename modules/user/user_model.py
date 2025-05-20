@@ -30,7 +30,9 @@ class UserDao:
     def get_user_password_hash(email:str):
      with Session(engine) as session:
         users=session.exec(select(User).where(User.email==email)).first()
-     return users.password_hash
+        if not users:
+            return None
+        return users.password_hash
  
     
      
